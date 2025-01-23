@@ -12,6 +12,7 @@ model Post {
   title     String
   content   String
   authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean  @default(false)
@@ -27,6 +28,8 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  posts     Post[]
+  profile   Profile?
 
   @@map("users")
 }
@@ -37,6 +40,7 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("profiles")
 }
