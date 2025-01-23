@@ -30,3 +30,13 @@ model User {
 
   @@map("users")
 }
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  bio       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int      @unique
+
+  @@map("profiles")
+}
