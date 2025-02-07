@@ -32,7 +32,6 @@ export const resolvers = {
       const token = jwt.sign({ userId: newUser.id }, "signingKey", {
         expiresIn: "1d",
       });
-      console.log(token);
     },
   },
 };
