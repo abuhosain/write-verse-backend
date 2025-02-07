@@ -20,6 +20,19 @@ export const resolvers = {
 
   Mutation: {
     signup: async (parent: any, args: IUserInfo, context: any) => {
+      const isExist = await prisma.user.findMany({
+        where: {
+          email: args.email,
+        },
+      });
+
+      if (isExist.length > 0) {
+        return {
+          token: null,
+          userError: "User already exist",
+        };
+      }
+
       const hashedPassword = await bcrypt.hash(args.password, 12);
       console.log(hashedPassword);
       const newUser = await prisma.user.create({
