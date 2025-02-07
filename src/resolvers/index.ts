@@ -33,6 +33,11 @@ export const resolvers = {
       const token = jwt.sign({ userId: newUser.id }, "signingKey", {
         expiresIn: "1d",
       });
+
+      return {
+        token,
+        userError: null,
+      };
     },
 
     signin: async (parent: any, args: any, context: any) => {
@@ -44,6 +49,7 @@ export const resolvers = {
       if (!user) {
         return {
           token: null,
+          userError: "User not found",
         };
       }
       const currectPasssword = await bcrypt.compare(
@@ -53,6 +59,7 @@ export const resolvers = {
 
       if (!currectPasssword) {
         return {
+          userError: "Invalid password",
           token: null,
         };
       }
@@ -63,6 +70,7 @@ export const resolvers = {
 
       return {
         token,
+        userError: null,
       };
     },
   },

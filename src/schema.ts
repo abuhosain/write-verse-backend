@@ -14,6 +14,7 @@ export const typeDefs = `#graphql
     }
 
     type AuthPayload  {
+            userError : String
             token : String
         }
 
