@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
 const prisma = new PrismaClient();
 
 interface IUserInfo {
@@ -19,13 +21,18 @@ export const resolvers = {
     signup: async (parent: any, args: IUserInfo, context: any) => {
       const hashedPassword = await bcrypt.hash(args.password, 12);
       console.log(hashedPassword);
-      return await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           name: args.name,
           email: args.email,
           password: hashedPassword,
         },
       });
+
+      const token = jwt.sign({ userId: newUser.id }, "signingKey", {
+        expiresIn: "1d",
+      });
+      console.log(token);
     },
   },
 };
