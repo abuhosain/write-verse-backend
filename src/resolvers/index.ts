@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { sign } from "crypto";
 
 const prisma = new PrismaClient();
 
@@ -32,6 +33,37 @@ export const resolvers = {
       const token = jwt.sign({ userId: newUser.id }, "signingKey", {
         expiresIn: "1d",
       });
+    },
+
+    signin: async (parent: any, args: any, context: any) => {
+      const user = await prisma.user.findFirst({
+        where: {
+          email: args.email,
+        },
+      });
+      if (!user) {
+        return {
+          token: null,
+        };
+      }
+      const currectPasssword = await bcrypt.compare(
+        args.password,
+        user?.password
+      );
+
+      if (!currectPasssword) {
+        return {
+          token: null,
+        };
+      }
+
+      const token = jwt.sign({ userId: user.id }, "signingKey", {
+        expiresIn: "1d",
+      });
+
+      return {
+        token,
+      };
     },
   },
 };
