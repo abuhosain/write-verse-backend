@@ -1,8 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { sign } from "crypto";
 import { jwtHelper } from "../utils/jwtHelpers";
+import config from "../config";
 
 const prisma = new PrismaClient();
 
@@ -43,7 +42,10 @@ export const resolvers = {
         },
       });
 
-      const token = await jwtHelper({ userId: newUser.id });
+      const token = await jwtHelper(
+        { userId: newUser.id },
+        config.jwt.secrete as string
+      );
 
       return {
         token,
@@ -75,7 +77,10 @@ export const resolvers = {
         };
       }
 
-      const token = await jwtHelper({ userId: user.id });
+      const token = await jwtHelper(
+        { userId: user.id },
+        config.jwt.secrete as string
+      );
 
       return {
         token,

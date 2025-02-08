@@ -1,7 +1,10 @@
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 
-export const jwtHelper = async (payload: { userId: number }) => {
-  const token = jwt.sign(payload, "signingKey", {
+export const jwtHelper = async (
+  payload: { userId: number },
+  secrete: Secret
+) => {
+  const token = jwt.sign(payload, secrete, {
     expiresIn: "1d",
   });
   return token;
