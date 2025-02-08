@@ -9,6 +9,7 @@ interface IUserInfo {
   name: string;
   email: string;
   password: string;
+  bio?: string;
 }
 
 export const resolvers = {
@@ -41,6 +42,15 @@ export const resolvers = {
           password: hashedPassword,
         },
       });
+
+      if (args.bio) {
+        await prisma.profile.create({
+          data: {
+            bio: args.bio,
+            userId: newUser.id,
+          },
+        });
+      }
 
       const token = await jwtHelper(
         { userId: newUser.id },
