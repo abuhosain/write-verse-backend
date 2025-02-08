@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { jwtHelper } from "../utils/jwtHelpers";
 import config from "../config";
+import { Query } from "./Query/Query";
 
 const prisma = new PrismaClient();
 
@@ -13,12 +14,7 @@ interface IUserInfo {
 }
 
 export const resolvers = {
-  Query: {
-    users: async (parent: any, args: any, context: any) => {
-      return prisma.user.findMany();
-    },
-  },
-
+  Query,
   Mutation: {
     signup: async (parent: any, args: IUserInfo, context: any) => {
       const isExist = await prisma.user.findFirst({
