@@ -8,15 +8,14 @@ export const typeDefs = `#graphql
     }
 
     type Mutation {
-        signup(name : String!, email : String!, password : String, bio : String) : AuthPayload     
+        signup(name : String!, email : String!, password : String, bio : String) : AuthPayload,    
 
-        signin(email : String!, password : String) : AuthPayload
+        signin(email : String!, password : String) : AuthPayload,
+
+        addPost(title : String!, content : String!) : PostPayload,
     }
 
-    type AuthPayload  {
-            userError : String
-            token : String
-        }
+ 
 
     type Post {
         id : ID!
@@ -42,5 +41,16 @@ export const typeDefs = `#graphql
         user : User!
         createdAt : String!
     }
+
+    type AuthPayload  {
+            userError : String
+            token : String
+        }
+
+    type PostPayload {
+        userError : String
+        post : Post
+    }
+
     
 `;
