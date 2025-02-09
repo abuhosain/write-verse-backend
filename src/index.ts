@@ -8,6 +8,7 @@ import { jwtHelper } from "./utils/jwtHelpers";
 
 interface Context {
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
+  userInfo: { userId: number } | null;
 }
 
 const prisma = new PrismaClient();
@@ -26,6 +27,7 @@ const main = async () => {
       );
       return {
         prisma,
+        userInfo,
       };
     },
   });
