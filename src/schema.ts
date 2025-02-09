@@ -5,14 +5,16 @@ export const typeDefs = `#graphql
         users : [User]
         posts : [Post!]!
         profile : [Profile!]!
-    }
+    } 
 
     type Mutation {
         signup(name : String!, email : String!, password : String, bio : String) : AuthPayload,    
 
         signin(email : String!, password : String) : AuthPayload,
 
-        addPost(title : String!, content : String!) : PostPayload,
+        addPost(post : PostInput!) : PostPayload,
+
+        updatePost(postId : ID!, post : PostInput) : PostPayload,
     }
 
  
@@ -50,7 +52,10 @@ export const typeDefs = `#graphql
     type PostPayload {
         userError : String
         post : Post
-    }
+    } 
 
-    
+    input PostInput {
+        title : String
+        content : String
+    }
 `;

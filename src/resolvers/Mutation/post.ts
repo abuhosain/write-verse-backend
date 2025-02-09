@@ -1,5 +1,5 @@
 export const postResolvers = {
-  addPost: async (parent: any, args: any, { prisma, userInfo }: any) => {
+  addPost: async (parent: any, { post }: any, { prisma, userInfo }: any) => {
     if (!userInfo) {
       return {
         userError: "User not authenticated",
@@ -7,7 +7,7 @@ export const postResolvers = {
       };
     }
 
-    if (!args.title || !args.content) {
+    if (!post.title || !post.content) {
       return {
         userError: "Title and content is required",
         post: null,
@@ -16,8 +16,8 @@ export const postResolvers = {
 
     const newPost = await prisma.post.create({
       data: {
-        title: args.title,
-        content: args.content,
+        title: post.title,
+        content: post.content,
         authorId: userInfo.userId,
       },
     });
