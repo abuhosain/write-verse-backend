@@ -27,4 +27,11 @@ export const postResolvers = {
       post: newPost,
     };
   },
+  updatePost: async (
+    parent: any,
+    { postId, post }: any,
+    { prisma, userInfo }: any
+  ) => {
+    console.log("post", postId, post, userInfo);
+  },
 };
