@@ -1,3 +1,5 @@
+import { checkUserAccess } from "../../utils/checkUserAccess";
+
 export const postResolvers = {
   addPost: async (parent: any, { post }: any, { prisma, userInfo }: any) => {
     if (!userInfo) {
@@ -38,33 +40,10 @@ export const postResolvers = {
         post: null,
       };
     }
-    const user = await prisma.user.findUnique({
-      where : { id : userInfo.userId },
-    });
-
-    if(!user) {
-      return {
-        userError: "User not found",
-        post: null,
-      };
-    }
-
-    const isExistPost = await prisma.post.findUnique({
-      where : { id: Number(postId) },
-    })
-
-    if(!isExistPost) {
-      return {
-        userError: "Post not found",
-        post: null,
-      };
-    }
-
-    if(isExistPost.authorId !== userInfo.userId) {
-      return {
-        userError: "You are not authorized to update this post",
-        post: null,
-      };
+  
+    const error = await checkUserAccess(prisma, userInfo.userId, postId);
+    if (error){
+      return error;
     }
 
      const updatedPost = await prisma.post.update({
