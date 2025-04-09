@@ -34,7 +34,7 @@ export const typeDefs = `#graphql
         email : String!
         age : Int
         createdAt : String!
-        posts : [Post!]
+        posts : [Post]
     }
 
     type Profile {
