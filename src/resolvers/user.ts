@@ -6,5 +6,11 @@ export const User = {
         },
         });
     },
- 
+    profile: async (parent: any, args: any, { prisma }: any) => {
+        return await prisma.profile.findUnique({
+        where: {
+            userId: parent.id,
+        },
+        });
+    },
 }
