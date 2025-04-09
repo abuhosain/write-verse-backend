@@ -83,4 +83,34 @@ export const postResolvers = {
     };
 
   },
+  publishPost: async (
+    parent: any,
+    { postId, post }: any,
+    { prisma, userInfo }: any
+  ) => { 
+    if (!userInfo) {
+      return {
+        userError: "User not authenticated",
+        post: null,
+      };
+    }
+  
+    const error = await checkUserAccess(prisma, userInfo.userId, postId);
+    if (error){
+      return error;
+    }
+
+     const updatedPost = await prisma.post.update({
+      where: { id: Number(postId) },
+      data: {
+        published: true,
+      }
+    });
+
+    return {
+      userError: null,
+      post: updatedPost,
+    };
+
+  },
 };

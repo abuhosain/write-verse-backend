@@ -9,13 +9,12 @@ export const typeDefs = `#graphql
 
     type Mutation {
         signup(name : String!, email : String!, password : String, bio : String) : AuthPayload,    
-
         signin(email : String!, password : String) : AuthPayload,
 
-        addPost(post : PostInput!) : PostPayload,
-
+        addPost(post : PostInput!) : PostPayload, 
         updatePost(postId : ID!, post : PostInput) : PostPayload,
         deletePost(postId : ID!) : PostPayload,
+        publishPost(postId : ID!) : PostPayload,
     }
 
  
