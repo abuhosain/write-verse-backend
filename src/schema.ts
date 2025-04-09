@@ -24,7 +24,7 @@ export const typeDefs = `#graphql
         title : String!
         content : String!
         published : Boolean!
-        author : User!
+        author : User
         createdAt : String!
     }
 
