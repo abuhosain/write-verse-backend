@@ -57,4 +57,30 @@ export const postResolvers = {
     };
 
   },
+  deletePost: async (
+    parent: any,
+    { postId }: any,
+    { prisma, userInfo }: any
+  ) => { 
+    if (!userInfo) {
+      return {
+        userError: "User not authenticated",
+        post: null,
+      };
+    }
+  
+    const error = await checkUserAccess(prisma, userInfo.userId, postId);
+    if (error){
+      return error;
+    }
+
+     const deletedPost = await prisma.post.delete({
+      where: { id: Number(postId) }
+    }); 
+    return {
+      userError: null,
+      post: deletedPost,
+    };
+
+  },
 };
