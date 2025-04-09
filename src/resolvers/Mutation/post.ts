@@ -31,7 +31,43 @@ export const postResolvers = {
     parent: any,
     { postId, post }: any,
     { prisma, userInfo }: any
-  ) => {
-    console.log("post", postId, post, userInfo);
+  ) => { 
+    if (!userInfo) {
+      return {
+        userError: "User not authenticated",
+        post: null,
+      };
+    }
+    const user = await prisma.user.findUnique({
+      where : { id : userInfo.userId },
+    });
+
+    if(!user) {
+      return {
+        userError: "User not found",
+        post: null,
+      };
+    }
+
+    const isExistPost = await prisma.post.findUnique({
+      where : { id: Number(postId) },
+    })
+
+    if(!isExistPost) {
+      return {
+        userError: "Post not found",
+        post: null,
+      };
+    }
+
+    if(isExistPost.authorId !== userInfo.userId) {
+      return {
+        userError: "You are not authorized to update this post",
+        post: null,
+      };
+    }
+
+    console.log("post", post, "user", user);
+
   },
 };
