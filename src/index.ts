@@ -11,7 +11,7 @@ interface Context {
   userInfo: { userId: number } | null;
 }
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const main = async () => {
   const server = new ApolloServer({
